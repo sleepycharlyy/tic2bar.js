@@ -2,7 +2,7 @@
   "name": "tic2bar",
   "version": "0.0.1",
   "description": "encodes and decodes .tic cartridges into barcodes",
-  "main": "src/index.js",
+  "main": "src/tic2bar.js",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/sleepycharlyy/tic2qr.js.git"
