@@ -1,15 +1,16 @@
 'use strict';
 
 /* Imports */
-const zip = require('node-zip')();
-const fs = require('fs');
-const jsbarcode = require('jsbarcode');
-const { createCanvas, loadImage, registerFont } = require('canvas');
-const prompt = require('prompt-sync')();
-const ipfs_mini = require('ipfs-mini');
-const ipfs = new ipfs_mini({host: 'ipfs.infura.io', port: 5001, protocol: 'https'})
+const zip = require('node-zip')(); /* zipping and unzipping */
+const fs = require('fs'); /* file system */
+const jsbarcode = require('jsbarcode'); /* barcode creation */
+const Quagga = require('quagga').default; /* barcode scanning and decoding */
+const { createCanvas, loadImage, registerFont } = require('canvas'); /* canvas to draw barcode image */
+const prompt = require('prompt-sync')(); /* terminal prompt functions */
+const ipfs_mini = require('ipfs-mini'); /* ipfs api */
+const ipfs = new ipfs_mini({host: 'ipfs.infura.io', port: 5001, protocol: 'https'}) /* connecting to infura gateway */
 
-var debug_mode = true;
+var debug_mode = true; /* debug mode */
 var timeout_countdown = 30000; /* how long in milisec till timeout */
 
 var game_title = ' '; /* title of the game the user wants to encode */
@@ -70,7 +71,7 @@ function encode(file_path){
     setInterval(function(){
         if(hash != ''){
             /* hash data has arrived => create bar code and stop timers */
-            barcode_create(hash, game_title.toLowerCase() + '-cardridge.png');
+            barcode_create(hash, game_title.toLowerCase() + '-cartridge.png');
             clearTimeout(this);
             clearTimeout(timeout_timer);
         }
@@ -124,8 +125,8 @@ function barcode_create(hash, file_path){
 
 
 
-
-/* downloads zip_data from hash. returns zip_data */
+/* OLD CODE */
+/* downloads zip_data from hash. returns zip_data 
 function ipfs_download(hash){
     if(hash == undefined){
         log('The hash code is undefined. Probably a timeout error. Check your connection!', 'error');
@@ -138,16 +139,36 @@ function ipfs_download(hash){
           log(result,'debug');
         }
       });
-}
+}*/
 
 function main(){
     while(true){
         switch(prompt('Do you want to encode a .tic cartridge or decode a barcode? (e / d) >> ')) {
         case 'd': 
-            log('\x1b[36m' + '\nYou selected decode: ');
+            log('\x1b[36m' + '\nYou selected decode ');
+
+            /* TODO: DECODING (this works as far as i know atleast it returns the right value that also was encoded now i only need to finish it) */
+            Quagga.decodeSingle({
+                src: "e-cardridge.png",
+                numOfWorkers: 0,  // Needs to be 0 when used within node
+                inputStream: {
+                    size: 1000  // restrict input-size to be 1000px in width (long-side)
+                },
+                decoder: {
+                    readers: ["code_128_reader"] // List of active readers
+                },
+            }, function(result) {
+                if(result.codeResult) {
+                    console.log("result", result.codeResult.code);
+                } else {
+                    console.log("not detected");
+                }
+            });
+
+
             break;
         case 'e': 
-            log('\x1b[36m' + '\nYou selected encode: ');
+            log('\x1b[36m' + '\nYou selected encode ');
             game_title = prompt('What is the title of the game you want to encode? >> ');
 
             /* check if game_title is empty */

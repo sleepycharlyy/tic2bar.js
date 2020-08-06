@@ -1,5 +1,7 @@
 # tic2bar.js
 
+WIP
+
 ## About
 
 This application encodes .tic cartridges for TIC-80 into bar-codes for distribution  
@@ -16,6 +18,7 @@ This project's made in node-js.
     - "jsbarcode": "^3.11.0",
     - "node-zip": "^1.1.1",
     - "prompt-sync": "^4.2.0"
+    - "quagga": "^0.12.1"
 
 ## TIC-80
 
@@ -25,7 +28,7 @@ TIC-80 is a open source fantasy computer for making, playing and sharing little 
 
 ## Ending words
 
-This application is very bare bones and more of an idea.
+This application is very bare bones and more of an idea.  
 The project is as it stands very gimmicky and not that useful,
 but i quite like the idea of storing TIC-80 cartridges in bar-codes
 for distribution and i can only imagine what kinds of stuff you could pull of,

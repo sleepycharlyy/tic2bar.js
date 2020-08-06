@@ -26,6 +26,7 @@
     "ipfs-mini": "^1.1.5",
     "jsbarcode": "^3.11.0",
     "node-zip": "^1.1.1",
-    "prompt-sync": "^4.2.0"
+    "prompt-sync": "^4.2.0",
+    "quagga": "^0.12.1"
   }
 }
