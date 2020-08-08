@@ -5,15 +5,17 @@
 /* Imports */
 const fs = require('fs'); /* file system */
 const path = require('path'); /* path system */
+const JSON5 = require('json5') /* json5 parser */
 const jsbarcode = require('jsbarcode'); /* barcode creation */
 const Quagga = require('quagga').default; /* barcode scanning and decoding */
-const { createCanvas, loadImage, registerFont } = require('canvas'); /* canvas to draw barcode image */
+const { createCanvas, registerFont } = require('canvas'); /* canvas to draw barcode image */
 const prompt = require('prompt-sync')(); /* terminal prompt functions */
 const ipfs_mini = require('ipfs-mini'); /* ipfs api */
 const ipfs = new ipfs_mini({host: 'ipfs.infura.io', port: 5001, protocol: 'https'}) /* connecting to infura gateway */
 
-var debug_mode = true; /* debug mode */
-var timeout_countdown = 30000; /* how long in milisec till timeout */
+/* config (these variables will be overwritten by the config and are just default values) */
+var debug_mode = false; /* debug mode */
+var timeout_countdown = 30000; /* how long in milisec till timeout error is thrown */
 
 /* log function to log messages to the console */ 
 function log(msg, type){
@@ -37,9 +39,11 @@ function log(msg, type){
 
 /* create barcode and save it. takes (ipfs) hash and file_path (to save png to) and the game_title as inputs */
 function create_barcode(hash, file_path, game_title){
+    registerFont('assets/tic-80-wide-font.ttf', { family: 'Tic' });
+
     /* create canvas */
-    registerFont('assets/tic-80-wide-font.ttf', { family: 'Tic' })
     var canvas = createCanvas(200, 200);
+
     /* create bar code */
     log('Creating barcode', 'info');
     jsbarcode(canvas, hash, {
@@ -54,24 +58,29 @@ function create_barcode(hash, file_path, game_title){
         lineColor: '#140c1c',
         text: game_title.toLowerCase() + ' - tic-80 cartridge'
     });
-    /* draw logo image and text */
-    // TODO: MAKE THIS WORK
-    const ctx = canvas.getContext('2d');
-    ctx.font = '12px "Tic"'
-    ctx.fillText('Test :(', 250, 10)
-    loadImage('assets/tic-80-logo.png').then((logo) => {
-        ctx.drawImage(logo,1,1,16,16);
-    });
-    /* save file */
+
+    /* save file as jpg or png*/
     const out = fs.createWriteStream(file_path)
-    const stream = canvas.createPNGStream()
-    stream.pipe(out)
-    out.on('finish', () => {
-        /* finished */
-        log('Barcode was created and saved to: ' + file_path, 'success'); 
-        log('Finished!', 'success');
-        process.exit(1);
-    })
+    if (file_path.split('.').pop() == 'jpg'){
+        const stream = canvas.createJPEGStream()
+        stream.pipe(out)
+        out.on('finish', () => {
+            /* finished */
+            log('Barcode was created and saved to: ' + file_path, 'success'); 
+            log('Finished!', 'success');
+            process.exit(1);
+        })
+    }else{
+        const stream = canvas.createPNGStream()
+        stream.pipe(out)
+        out.on('finish', () => {
+            /* finished */
+            log('Barcode was created and saved to: ' + file_path, 'success'); 
+            log('Finished! ʕ•ᴥ•ʔ', 'success');
+            process.exit(1);
+        })
+    }
+ 
 
 }
 
@@ -82,7 +91,7 @@ function create_tic(data, file_path){
     fs.writeFileSync(file_path, data, 'binary');
 
     log("Successfully written cartridge to: " + file_path, 'success');
-    log('Finished!', 'success');
+    log('Finished! ʕ•ᴥ•ʔ', 'success');
     process.exit(1);
 
 }
@@ -180,9 +189,15 @@ function decode(input_path, output_path, game_title){
     });
 }
 
+/* load json5 config in current directory */
 function load_config(){
-    fs.readFileSync(path.resolve(__dirname, 'config.json'))
-    // TODO: make config
+    /* reading config file and parsing it through json5 */
+    let config_file = fs.readFileSync(path.resolve(__dirname, 'config.json5'));
+    let config = JSON5.parse(config_file);
+    
+    /* assigning variables */
+    debug_mode = config.debug_mode;
+    timeout_countdown = config.timeout_countdown;
 }
 
 
@@ -192,7 +207,7 @@ function main(){
     let input_path = '';
     let output_path = '';
 
-    console.log("\x1b[35m" + 'sleepycharlyy/tic2bar.js' + "\x1b[0m");
+    log("\x1b[35m" + 'sleepycharlyy/tic2bar.js' + "\x1b[0m" + '\n');
 
     /* load config */
     load_config();
@@ -229,19 +244,15 @@ function main(){
             output_path = prompt('What is the path you want to export the .tic cartridge to? >> '); 
 
             /* check if file path is empty */
-            if (input_path == undefined || input_path == " " || input_path == null){
+            if (output_path == undefined || output_path == " " || output_path == null){
             log("The file path can't be empty!", 'error');
             }
             /* check if file is not a .tic file */
-            if (input_path.split('.').pop() != 'tic') { 
+            if (output_path.split('.').pop() != 'tic') { 
                 /* is another file type */
                 log('This filetype is unrecognized, use .tic files!', 'error');
             }
-            /* check if file exists */
-            if(!fs.existsSync(input_path)) {
-                log("This file doesn't exist!", 'error');
-            }
-            
+
             /* decode file */
             log('\n');
             decode(input_path, output_path, game_title)
@@ -283,16 +294,13 @@ function main(){
                 /* is another file type */
                 log('This filetype is unrecognized, use .png or .jpg files!', 'error');
             }
-            /* check if file exists */
-            if(!fs.existsSync(output_path)) {
-                log("This file doesn't exist!", 'error');
-            }
 
             /* encode file */
             log('\n');
             encode(input_path, output_path, game_title);
             break;
         default:
+            /* when the user didn't input e or d the whole promt repeats */
             continue;
         }
         break;

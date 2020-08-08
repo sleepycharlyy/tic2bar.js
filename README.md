@@ -13,6 +13,7 @@ This project's made in node-js.
     - "canvas": "^2.6.1",
     - "ipfs-mini": "^1.1.5",
     - "jsbarcode": "^3.11.0",
+    - "json5": "^2.1.3",
     - "prompt-sync": "^4.2.0",
     - "quagga": "^0.12.1"
 
