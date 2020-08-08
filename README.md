@@ -8,6 +8,8 @@ It uploads them to IPFS through the INFURA gateway
 and stores the hash of the upload in barcodes.
 This project's made in node-js.
 
+[itch.io](https://sleepycharlyy.itch.io/tic2bar)
+
 ### Installation
 
 > npm install --global tic2bar
