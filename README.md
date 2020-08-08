@@ -16,6 +16,10 @@ This project's made in node-js.
 
 > tic2bar
 
+## Example
+
+![Example](https://i.imgur.com/gubMXqE.png)
+
 ## Dependencies
 
     - "canvas": "^2.6.1",
