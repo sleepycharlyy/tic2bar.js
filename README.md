@@ -10,7 +10,7 @@ This project's made in node-js.
 
 ### Installation
 
-> npm install --global tic2bar
+> npm install --global @sleepycharlyy/tic2bar
 
 ### Usage
 

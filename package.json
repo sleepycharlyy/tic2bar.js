@@ -1,6 +1,6 @@
 {
-  "name": "tic2bar",
-  "version": "0.0.1",
+  "name": "@sleepycharlyy/tic2bar.js",
+  "version": "1.0.0",
   "description": "encodes and decodes .tic cartridges into barcodes",
   "main": "src/tic2bar.js",
   "bin": {
@@ -31,5 +31,5 @@
     "prompt-sync": "^4.2.0",
     "quagga": "^0.12.1"
   },
-  "publishConfig": { "registry": "https://npm.pkg.github.com/" }
+  "publishConfig": { "registry": "https://npm.pkg.github.com/" } 
 }
