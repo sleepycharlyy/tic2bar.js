@@ -6,7 +6,8 @@ This application encodes .tic cartridges for TIC-80 into barcodes for distributi
 and is able to decode them back into .tic cartridges.  
 It uploads them to IPFS through the INFURA gateway  
 and stores the hash of the upload in barcodes.
-This project's made in node-js.
+This project's made in node-js.  
+I took inspiration from [this](https://youtu.be/ExwqNreocpg) video from MattKC.
 
 [itch.io](https://sleepycharlyy.itch.io/tic2bar)
 
