@@ -8,7 +8,7 @@ const path = require('path'); /* path system */
 const JSON5 = require('json5') /* json5 parser */
 const jsbarcode = require('jsbarcode'); /* barcode creation */
 const Quagga = require('quagga').default; /* barcode scanning and decoding */
-const { createCanvas, registerFont } = require('canvas'); /* canvas to draw barcode image */
+const { createCanvas, loadImage, registerFont } = require('canvas'); /* canvas to draw barcode image */
 const prompt = require('prompt-sync')(); /* terminal prompt functions */
 const ipfs_mini = require('ipfs-mini'); /* ipfs api */
 const ipfs = new ipfs_mini({host: 'ipfs.infura.io', port: 5001, protocol: 'https'}) /* connecting to infura gateway */
@@ -300,7 +300,7 @@ function main(){
             encode(input_path, output_path, game_title);
             break;
         default:
-            /* when the user didn't input e or d the whole promt repeats */
+            /* when the user didn't input e or d the whole prompt repeats */
             continue;
         }
         break;
