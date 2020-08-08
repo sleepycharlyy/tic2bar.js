@@ -8,6 +8,14 @@ It uploads them to IPFS through the INFURA gateway
 and stores the hash of the upload in barcodes.
 This project's made in node-js.
 
+### Installation
+
+> npm install --global tic2bar
+
+### Usage
+
+> tic2bar
+
 ## Dependencies
 
     - "canvas": "^2.6.1",
@@ -22,6 +30,10 @@ This project's made in node-js.
 TIC-80 is a open source fantasy computer for making, playing and sharing little games.  
 [tic.computer](https://tic.computer/)  
 [nesbox/TIC-80](https://github.com/nesbox/TIC-80)  
+
+## License
+
+GPL-3.0 see LICENSE.md for details.
 
 ## Ending words
 
