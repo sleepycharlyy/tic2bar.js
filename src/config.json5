@@ -1,11 +1,11 @@
 /* config file for tic2bar.js */
 {
     /* debug_mode prints debug messages in the console */
-    debug_mode: true,
+    debug_mode: false,
     /* timeout_countdown is the time in miliseconds till a timeout error is thrown when connecting to ipfs
      * increase this amount if you have slow internet */
     timeout_countdown: 30000,
-    /* encoder & decoder type: qr or bar */
-    type: 'bar',
+    /* encoder & decoder type: qr or 128 (code128 barcode) */
+    type: 'qr',
 }
   
