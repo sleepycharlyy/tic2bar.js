@@ -16,29 +16,29 @@ const ipfs = new ipfs_mini({host: 'ipfs.infura.io', port: 5001, protocol: 'https
 /* config (these variables will be overwritten by the config and are just default values) */
 var debug_mode = false; /* debug mode */
 var timeout_countdown = 30000; /* how long in milisec till timeout error is thrown */
+var type = 'qr'; /* encoder and decoder type qr or bar */
 
 /* log function to log messages to the console */ 
 function log(msg, type){
     switch(type){
     case 'info': 
-    console.log('\x1b[0m' + 'INFO: ' + msg);
+        console.log('\x1b[0m' + 'INFO: ' + msg);
         break;
     case 'error': 
-        console.log('\x1b[31m' + 'ERROR: ' + msg);
+        console.log('ERROR: \x1b[31m' + msg );
         process.exit(1);
-    case 'debug': if(debug_mode) console.log('DEBUG: ' + msg);
+    case 'debug': if(debug_mode) console.log('DEBUG: ' + "\x1b[36m" + msg + '\x1b[0m');
         break;
     case 'success': 
-        console.log('\x1b[32m' + msg);
+        console.log('\x1b[32m' + msg + '\x1b[0m');
         break;
     default: console.log(msg);
         break;
     }
-    console.log('\x1b[0m');
 }
 
 /* create barcode and save it. takes (ipfs) hash and file_path (to save png to) and the game_title as inputs */
-function create_barcode(hash, file_path, game_title){
+function bar_create(hash, file_path, game_title){
     registerFont('assets/tic-80-wide-font.ttf', { family: 'Tic' });
 
     /* create canvas */
@@ -67,7 +67,7 @@ function create_barcode(hash, file_path, game_title){
         out.on('finish', () => {
             /* finished */
             log('Barcode was created and saved to: ' + file_path, 'success'); 
-            log('Finished!', 'success');
+            log('Finished! ʕ•ᴥ•ʔ', 'success');
             process.exit(1);
         })
     }else{
@@ -97,7 +97,7 @@ function create_tic(data, file_path){
 }
 
 /* encode file (expected .tic, and game_title) */
-function encode(input_path, output_path, game_title){ 
+function bar_encode(input_path, output_path, game_title){ 
     /* load file */
     log('Loading:  ' + input_path, 'info');
     let file = fs.readFileSync(input_path, 'binary');
@@ -123,7 +123,7 @@ function encode(input_path, output_path, game_title){
     setInterval(function(){
         if(hash != ''){
             /* hash data has arrived => create bar code and stop timers */
-            create_barcode(hash, output_path, game_title);
+            bar_create(hash, output_path, game_title);
             clearTimeout(this);
             clearTimeout(timeout_timer);
         }
@@ -131,7 +131,7 @@ function encode(input_path, output_path, game_title){
 }
 
 /* decode barcode (expected input_path to .png or .jpg, output_path to .tic and game_title) */
-function decode(input_path, output_path, game_title){
+function bar_decode(input_path, output_path, game_title){
     /* decoding barcode */
     log('Starting to decode barcode', 'info');
     Quagga.decodeSingle({
@@ -198,6 +198,14 @@ function load_config(){
     /* assigning variables */
     debug_mode = config.debug_mode;
     timeout_countdown = config.timeout_countdown;
+    type = config.type;
+
+    /* debug */
+    log('Settings:', 'debug');
+    log('debug_mode: ' + debug_mode, 'debug');
+    log('type: ' + type, 'debug');
+    log('timeout_countdown: ' + timeout_countdown, 'debug');
+    log('\n');
 }
 
 
@@ -255,7 +263,7 @@ function main(){
 
             /* decode file */
             log('\n');
-            decode(input_path, output_path, game_title)
+            bar_decode(input_path, output_path, game_title)
             break;
         case 'e': 
             log('\x1b[36m' + '\nYou selected encode ');
@@ -297,7 +305,7 @@ function main(){
 
             /* encode file */
             log('\n');
-            encode(input_path, output_path, game_title);
+            bar_encode(input_path, output_path, game_title);
             break;
         default:
             /* when the user didn't input e or d the whole prompt repeats */
