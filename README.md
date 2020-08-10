@@ -2,8 +2,8 @@
 
 ## About
 
-This command-line application encodes .tic cartridges for TIC-80 into barcodes or QR codes (default) for distribution  
-and is able to decode them back into .tic cartridges.  
+This command-line application uploads TIC-80 cartridges to IPFS and encodes the url into barcodes or QR codes (default) for distribution.  
+It's also able to decode them back and download the cartridges from IPFS.
 It uploads them to IPFS through the INFURA gateway  
 and stores the hash of the upload in the barcodes  
 or just the url of the cartridge in QR Codes.
@@ -20,7 +20,7 @@ I took inspiration from [this](https://youtu.be/ExwqNreocpg) video from MattKC.
 
 `> tic2bar`
 
-## Example
+## Examples
 
 ![Example](https://i.imgur.com/gubMXqE.png)
 ![Example2](https://i.imgur.com/inMFdqJ.png)
