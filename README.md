@@ -23,7 +23,7 @@ I took inspiration from [this](https://youtu.be/ExwqNreocpg) video from MattKC.
 ## Example
 
 ![Example](https://i.imgur.com/gubMXqE.png)
-![Example2](https://i.imgur.com/ebv7xJL.png)
+![Example2](https://i.imgur.com/inMFdqJ.png)
 
 ## Config
 

@@ -221,7 +221,17 @@ function qr_encode(input_path, output_path){
         
             /* create qr code */
             log('Creating QR code', 'info');
-            QRCode.toCanvas(canvas, 'https://ipfs.infura.io/ipfs/' + hash, { errorCorrectionLevel: 'H' }, function (error) {
+            var opts = {
+                errorCorrectionLevel: 'H',
+                quality: 0.3,
+                margin: 10,
+                scale: 4,
+                color: {
+                  dark: "#140c1c",
+                  light: "#deeed6"
+                }
+            }
+            QRCode.toCanvas(canvas, 'https://ipfs.infura.io/ipfs/' + hash, opts, function (error) {
                 if (error) log(error, 'error');
                 log('Successfully encoded QR Code!','success');
 
