@@ -60,7 +60,7 @@ The application is very bare bones and more of an idea.
 The project is as it stands very gimmicky and not that useful,
 but i quite like the idea of storing TIC-80 cartridges in barcodes or QR codes
 for distribution and i can only imagine what kinds of stuff you could pull of,
-like scanning a barcode on mobile and playing it directly through some kind of app.
+like scanning a QR Code on mobile and playing it directly through some kind of app.
 
 ## License
 
